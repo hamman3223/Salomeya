@@ -95,7 +95,7 @@ class keyGenerator():
 if __name__ == "__main__":
 
     encryptFile(
-        filename="pers_fin_accounting.xlsx",
+        filename="fin_acc.xlsx",
         key=keyGenerator.gen_key()
     ).run()
 
