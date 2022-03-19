@@ -5,7 +5,7 @@ class Decryptor():
 
     def __init__(self, filename: str, key: str):
 
-        self.__fernet_class = Fernet(key.encode())
+        self.fernet_class = Fernet(key)
         self.filename = filename
 
     def run(self):
@@ -13,7 +13,7 @@ class Decryptor():
         with open(self.filename, 'rb') as file:
 
             enc_d = file.read()
-            dec_d = self.__fernet_class.decrypt(enc_d)
+            dec_d = self.fernet_class.decrypt(enc_d)
 
         with open(self.filename, 'wb') as file:
 
