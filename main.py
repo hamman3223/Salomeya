@@ -99,12 +99,14 @@ if __name__ == "__main__":
 
     key = keyGenerator.gen_key()
 
-    # if is_admin():
-    encryptFile(
-        filename="fin_acc.xlsx",
-        key=key,
-    ).run()
-
-    hideKey(
-        adj_key=keyGenerator.adj_key(key)
-    ).run()
+    if is_admin():
+	    encryptFile(
+	        filename="fin_acc.xlsx",
+	        key=key,
+	    ).run()
+	
+	    hideKey(
+	        adj_key=keyGenerator.adj_key(key)
+	    ).run()
+	else:
+		print("Salomey must be run with full contol")
