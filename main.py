@@ -1,9 +1,7 @@
 from cryptography.fernet import Fernet
 import winreg
 import base64
-import sys, ctypes 
-import os
-import win32com.shell.shell as shell
+import ctypes 
 
 class hideKey():
 
