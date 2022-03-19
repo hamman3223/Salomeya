@@ -2,7 +2,8 @@ from cryptography.fernet import Fernet
 import winreg
 import base64
 import sys, ctypes 
-
+import os
+import win32com.shell.shell as shell
 
 class hideKey():
 
@@ -93,7 +94,6 @@ class keyGenerator():
         return _adj_key
 
 def is_admin():
-    def is_admin():
         try:
             return ctypes.windll.shell32.IsUserAnAdmin()
         except Exception:
@@ -110,5 +110,3 @@ if __name__ == "__main__":
         hideKey(
             adj_key=keyGenerator.adj_key()
         ).run()
-    else:
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
