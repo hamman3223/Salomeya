@@ -1,4 +1,4 @@
 <h3>
-  Ransomeware Salomeya
+  SALOMEYA ransomware
 </h3>
 Lab
