@@ -1,4 +1,7 @@
 <h3>
-  SALOMEYA ransomware
+  Salomeya.exe
 </h3>
-Lab
+
+</br>
+
+My own ransomeware written on python
