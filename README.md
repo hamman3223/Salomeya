@@ -1,2 +1,2 @@
-# ransomeWareShterenberg
+# Ransomeware "Salomeya"
 Lab
