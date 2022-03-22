@@ -1,7 +1,4 @@
 <h3>
-  Ransomeware 
-</h3>
-<h3>
-  <b>Salomeya</b>
+  Ransomeware <b>Salo</b>
 </h3>
 Lab
