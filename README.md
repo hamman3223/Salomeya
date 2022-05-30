@@ -1,5 +1,5 @@
 <h3>
-  Salomeya.exe
+  Salomeya
 </h3>
 
 </br>
